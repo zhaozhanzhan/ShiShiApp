@@ -1,0 +1,145 @@
+<!-- 导航条区域 Begin -->
+<ion-header>
+    <!-- <ion-navbar color="main" hideBackButton="true">
+        <ion-title>登录</ion-title>
+    </ion-navbar> -->
+</ion-header>
+<!-- 导航条区域 End -->
+
+<!-- 页面内容区域 Begin -->
+<ion-content class="h100p loginBg1" [formGroup]="formData">
+    <div class="h100p">
+        <div class="h100p">
+            <div class="h100p disFlex justConC">
+                <div class="w80p bgcFFF h300 borRadius8 posRel t80">
+                    <div class="w80 posAbs l50p ml-40 t-45">
+                        <img class="w100p" src="assets/imgs/login_head.png">
+                    </div>
+                    <div class="disFlex flexDirC aligIteC mt20">
+                        <div>
+                            <span class="ftz18">常熟敬老院</span>
+                        </div>
+                        <div>
+                            <span class="ftz16">实施APP</span>
+                        </div>
+                    </div>
+                    <div class="disFlex w100p justConC">
+                        <div class="w90p">
+                            <div class="w100p">
+                                <ion-row align-items-center>
+                                    <ion-col col-12 text-left no-padding class="">
+                                        <span class="ftz16">账号</span>
+                                    </ion-col>
+                                    <ion-col col-12 no-padding>
+                                        <ion-item no-padding>
+                                            <ion-input formControlName="num" class="ftz16" type="text" placeholder="请输入账号"></ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col col-12>
+                                        <span class="colorDan" [hidden]="!(formData.get('num').dirty && formData.get('num').errors)">请输入正确账号</span>
+                                    </ion-col>
+                                </ion-row>
+                            </div>
+                            <div class="w100p">
+                                <ion-row align-items-center>
+                                    <ion-col col-12 text-left no-padding class="">
+                                        <span class="ftz16">密码</span>
+                                    </ion-col>
+                                    <ion-col col-12 no-padding>
+                                        <ion-item no-padding>
+                                            <ion-input formControlName="password" class="ftz16" type="password" placeholder="请输入密码"></ion-input>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col col-12>
+                                        <span class="colorDan" [hidden]="!(formData.get('password').dirty && formData.get('password').errors)">密码长度为 5 ~ 16位</span>
+                                    </ion-col>
+                                </ion-row>
+                            </div>
+                            <div class="w100p mt10">
+                                <ion-row no-padding>
+                                    <ion-col col-12 text-center no-padding>
+                                        <button ion-button block color="main" (click)="clickLogin()">登录</button>
+                                    </ion-col>
+                                </ion-row>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <ion-grid no-padding [formGroup]="formData">
+        <ion-row padding-top>
+            <ion-col>
+                <div class="w100p h190">
+                    <div class="disFlex justConC aligIteC h100p">
+                        <div class="bgcFFF w150">
+                            <img src="assets/imgs/logo.png">
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row padding-top>
+            <ion-col class="disFlex justConC">
+                <div class="w90p">
+                    <div class="borBBox">
+                        <ion-row align-items-center>
+                            <ion-col col-2 text-center>
+                                <i class="iconfont icon-User2 ftz30 color333"></i>
+                            </ion-col>
+                            <ion-col col-10>
+                                <ion-input formControlName="username" class="ftz16" type="text" placeholder="账号"></ion-input>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-12>
+                                <span class="colorDan" [hidden]="!(formData.get('username').dirty && formData.get('username').errors)">请输入正确用户名</span>
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                    <div class="borBBox">
+                        <ion-row align-items-center>
+                            <ion-col col-2 text-center>
+                                <i class="iconfont icon-MiMa ftz30 color333"></i>
+                            </ion-col>
+                            <ion-col col-10>
+                                <ion-input type="password" formControlName="password" class="ftz16" type="password" placeholder="密码"></ion-input>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-12>
+                                <span class="colorDan" [hidden]="!(formData.get('password').dirty && formData.get('password').errors)">密码长度为 5 ~ 16位</span>
+                            </ion-col>
+                        </ion-row>
+                    </div>
+                    <div class="mt15 pl15">
+                        <div class="checkbox-wrap disFlex" (click)="toggleRemPwd()">
+                            <div class="flexBasis20 pt1">
+                                <div class="checkbox-box" [ngClass]="{'active': isRemPwd}">
+                                    <div class="checkbox-box-inner" [ngClass]="{' checkbox-box-check': isRemPwd}"></div>
+                                </div>
+                                <input type="checkbox" class="checkbox-base" />
+                            </div>
+                            <label class="checkbox-label flexGrow1 pl5">
+                                <div class="disFlex">
+                                    <span>记住密码</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="mt30">
+            <ion-col text-center>
+                <button ion-button round class="w90p" color="orange" (click)="clickLogin()">登录</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid> -->
+</ion-content>
+<!-- 页面内容区域 End -->

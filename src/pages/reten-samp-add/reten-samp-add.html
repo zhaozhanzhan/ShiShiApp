@@ -1,0 +1,108 @@
+<!-- 导航条区域 Begin -->
+<ion-header>
+    <ion-navbar color="main" hideBackButton="true">
+        <ion-title>
+            <span *ngIf="paramObj?.state == 'add'">添加留样</span>
+            <span *ngIf="paramObj?.state == 'edit'">修改留样</span>
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button class="pl10" (click)="backPrevPage()">
+                <!-- <span color="primary" showWhen="ios">返回</span> -->
+                <ion-icon class="ftz30" name="arrow-back" showWhen="android,windows,ios"></ion-icon>
+            </button>
+        </ion-buttons>
+        <!-- <ion-buttons end>
+            <button ion-button class="pr10" (click)="navCtrl.canGoBack()?navCtrl.pop():''">
+                <span showWhen="android,windows,ios">返回</span>
+                <ion-icon class="ftz30" name="ios-home" showWhen="android,windows,ios"></ion-icon>
+            </button>
+        </ion-buttons> -->
+    </ion-navbar>
+</ion-header>
+<!-- 导航条区域 End -->
+
+<!-- 页面内容区域 Begin -->
+<ion-content padding>
+    <div [formGroup]="formData" novalidate>
+        <div>
+            <div>
+                <ion-row no-padding>
+                    <ion-col col-12 no-padding>
+                        <ion-item no-padding>
+                            <ion-label class="ftz15">时间：</ion-label>
+                            <ion-datetime class="ftz15" formControlName="createTime" displayFormat="YYYY-MM-DD HH:mm" cancelText="取消" doneText="确认" placeholder="请选择时间 年-月-日 时:分"></ion-datetime>
+                        </ion-item>
+                        <span class="colorDan" [hidden]="!(formData.get('createTime').dirty && formData.get('createTime').errors)">时间不能为空</span>
+                    </ion-col>
+                </ion-row>
+                <ion-row no-padding>
+                    <ion-col col-12 no-padding>
+                        <ion-item no-padding>
+                            <ion-label class="ftz15">时段：</ion-label>
+                            <ion-select class="ftz15" interface="popover" okText="确认" cancelText="取消" formControlName="timeFrame">
+                                <ion-option value="早">早</ion-option>
+                                <ion-option value="中">中</ion-option>
+                                <ion-option value="晚">晚</ion-option>
+                                <!-- <ion-option *ngFor="let x of proData;let i = index;" [value]="x.provinceid">{{x.province}}</ion-option> -->
+                            </ion-select>
+                        </ion-item>
+                        <span class="colorDan" [hidden]="!(formData.get('timeFrame').dirty && formData.get('timeFrame').errors)">时间段不能为空</span>
+                    </ion-col>
+                </ion-row>
+                <ion-row no-padding>
+                    <ion-col col-12 no-padding>
+                        <ion-item no-padding>
+                            <ion-label class="ftz15">留样名：</ion-label>
+                            <ion-input class="ftz15" text-right placeholder="请输入留样名" formControlName="name"></ion-input>
+                        </ion-item>
+                        <span class="colorDan" [hidden]="!(formData.get('name').dirty && formData.get('name').errors)">留样名不能为空</span>
+                    </ion-col>
+                </ion-row>
+                <ion-row no-padding>
+                    <ion-col col-12 no-padding>
+                        <ion-item no-padding>
+                            <ion-label class="ftz15">留样量：</ion-label>
+                            <ion-input class="ftz15" text-right placeholder="请输入留样量" formControlName="reservedAmount"></ion-input>
+                        </ion-item>
+                        <span class="colorDan" [hidden]="!(formData.get('reservedAmount').dirty && formData.get('reservedAmount').errors)">留样量不能为空</span>
+                    </ion-col>
+                </ion-row>
+                <ion-row no-padding>
+                    <ion-col col-12 no-padding>
+                        <ion-item no-padding>
+                            <ion-label class="ftz15">留样人：</ion-label>
+                            <ion-input class="ftz15" text-right placeholder="请输入留样人" formControlName="reservedPeople"></ion-input>
+                        </ion-item>
+                        <span class="colorDan" [hidden]="!(formData.get('reservedPeople').dirty && formData.get('reservedPeople').errors)">留样人不能为空</span>
+                    </ion-col>
+                </ion-row>
+                <div class="mt10">
+                    <div class="w100p disFlex flexWrapW">
+                        <div class="w45p mb10 mr10" *ngFor="let x of imgBase64Arr,let i=index">
+                            <div class="w100p h150 posRel" [hidden]="imgBase64Arr.length >= 7 && i >= 6">
+                                <div class="w30 h30 posAbs t0 r0 zIndex4 disFlex justConC aligIteC bgcEEE" [hidden]="i == imgBase64Arr.length - 1" (click)="delImg($event,i)">
+                                    <ion-icon class="ftz25 colorDan" name="ios-trash"></ion-icon>
+                                </div>
+                                <div class="w100p h100p posAbs t0 l0 zIndex3 opacity0" (click)="clickCamera(i)"></div>
+                                <!-- <input class="w100p h100p posAbs t0 l0 zIndex3 opacity0" type="file" accept="image/*" (change)="selImg($event,i)" /> -->
+                                <!-- <input class="w100p h100p posAbs t0 l0 zIndex3 opacity0" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" (change)="selImg($event,i)" /> -->
+                                <img class="w100p h100p posAbs t0 l0 zIndex2" *ngIf="x" [src]="x">
+                                <img class="w100p h100p posAbs t0 l0 zIndex1" *ngIf="!x" src="assets/imgs/noImg.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <ion-row no-padding>
+            <ion-col col-12 text-center no-padding>
+                <button ion-button block color="main" (click)="saveForm()">保存</button>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-footer>
+<!-- 页面内容区域 End -->
