@@ -1,0 +1,78 @@
+<!-- 导航条区域 Begin -->
+<ion-header>
+    <ion-navbar color="orange">
+        <ion-title>读取标签</ion-title>
+    </ion-navbar>
+</ion-header>
+<!-- 导航条区域 End -->
+
+<!-- 页面内容区域 Begin -->
+<ion-content no-padding>
+    <div>
+        <div>
+            <div class="pl10 pr10">
+                <div class="h50 borBBox">
+                    <div class="h100p disFlex justConSB aligIteC">
+                        <div>
+                            <span class="ftz16">姓名</span>
+                        </div>
+                        <div>
+                            <span class="ftz16">{{formInfo?.name}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h50 borBBox">
+                    <div class="h100p disFlex justConSB aligIteC">
+                        <div>
+                            <span class="ftz16">街道</span>
+                        </div>
+                        <div>
+                            <span class="ftz16">{{formInfo?.street?.areaName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h50 borBBox">
+                    <div class="h100p disFlex justConSB aligIteC">
+                        <div>
+                            <span class="ftz16">社区</span>
+                        </div>
+                        <div>
+                            <span class="ftz16">{{formInfo?.community?.areaName}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h50 borBBox">
+                    <div class="h100p disFlex justConSB aligIteC">
+                        <div>
+                            <span class="ftz16">地址</span>
+                        </div>
+                        <div>
+                            <span class="ftz16">{{formInfo?.address}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h50 borBBox">
+                    <div class="h100p disFlex justConSB aligIteC">
+                        <div>
+                            <span class="ftz16">标签 Mac</span>
+                        </div>
+                        <div>
+                            <span class="ftz16 colorPri" *ngIf="formInfo?.nfcNo">{{formInfo?.nfcNo}}</span>
+                            <span class="ftz16 colorPri" *ngIf="!formInfo?.nfcNo">无（请扫描标签）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <ion-row no-padding justify-content-around>
+            <ion-col text-center class="w90p">
+                <button ion-button block color="orange" [disabled]="!formInfo?.nfcNo" (click)="saveForm()">保存</button>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-footer>
+<!-- 页面内容区域 End -->

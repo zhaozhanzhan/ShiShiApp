@@ -1,4 +1,4 @@
-<ion-content class="h100p sideMenuBg1">
+<ion-content>
     <div class="h100p disFlex flexDirC">
         <!-- 侧边栏头部区域Begin -->
         <div class="h130 w100p headBgImg">
@@ -9,8 +9,11 @@
                     </div>
                     <div class="mt10 disFlex">
                         <div class="pt3">
-                            <span class="ftz18 colorFFF">{{loginNum}}</span>
+                            <span class="ftz18 colorFFF">{{loginPhone}}</span>
                         </div>
+                        <!-- <div class="ml20" (click)="noDevTit()">
+                            <i class="iconfont icon-Edit ftz20 colorFFF"></i>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -18,39 +21,39 @@
         <div class="w100p borTBox"></div>
         <!-- 侧边栏头部区域End -->
 
-        <div class="flexGrow1 disFlex flexDirC justConSB">
+        <div class="bgc0388FE flexGrow1 disFlex flexDirC justConSB">
 
             <!-- 侧边栏菜单区域Begin -->
             <ion-row>
                 <ion-col class="disFlex justConC">
                     <div class="w95p">
-                        <div class="mt3">
-                            <ion-row align-items-center (click)="jumpPage('ScanQrcodePage')">
+                        <div class="" (click)="jumpPage('ConsignorListPage')">
+                            <ion-row align-items-center>
                                 <ion-col col-2>
-                                    <i class="iconfont icon-Scan6 colorFFF ftz26"></i>
+                                    <i class="iconfont icon-FaHuoRen colorFFF ftz26"></i>
                                 </ion-col>
                                 <ion-col col-10>
-                                    <span class="colorFFF ftz18">扫描</span>
+                                    <span class="colorFFF ftz18">发货人管理</span>
                                 </ion-col>
                             </ion-row>
                         </div>
-                        <div class="mt3">
-                            <ion-row align-items-center (click)="exitLogin()">
+                        <div class="" (click)="jumpPage('ConsigneeListPage')">
+                            <ion-row align-items-center>
                                 <ion-col col-2 text-left>
-                                    <i class="iconfont icon-ZhuXiao colorFFF ftz26"></i>
+                                    <i class="iconfont icon-ShouHuoRen colorFFF ftz26"></i>
                                 </ion-col>
                                 <ion-col col-10>
-                                    <span class="colorFFF ftz18">退出账号</span>
+                                    <span class="colorFFF ftz18">收货人管理</span>
                                 </ion-col>
                             </ion-row>
                         </div>
-                        <div class="mt3">
-                            <ion-row align-items-center (click)="exitApp()">
+                        <div class="" (click)="jumpPage('ChangePasswordPage')">
+                            <ion-row align-items-center>
                                 <ion-col col-2 text-left>
-                                    <i class="iconfont icon-TuiChu colorFFF ftz26"></i>
+                                    <i class="iconfont icon-XiuGaiMiMa colorFFF ftz26"></i>
                                 </ion-col>
                                 <ion-col col-10>
-                                    <span class="colorFFF ftz18">退出应用</span>
+                                    <span class="colorFFF ftz18">修改登录密码</span>
                                 </ion-col>
                             </ion-row>
                         </div>
@@ -70,7 +73,7 @@
             <!-- 侧边栏菜单区域End -->
 
             <!-- 侧边栏底部按钮Begin -->
-            <!-- <ion-row class="h50">
+            <ion-row class="h50">
                 <ion-col col-12 no-padding>
                     <div class="w100p borTBox">
                         <div class="w90p m0a">
@@ -99,7 +102,7 @@
                         </div>
                     </div>
                 </ion-col>
-            </ion-row> -->
+            </ion-row>
             <!-- 侧边栏底部按钮End -->
         </div>
     </div>

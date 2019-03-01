@@ -15,7 +15,9 @@ import { GlobalService } from "../../common/service/GlobalService";
 import { JsUtilsService } from "../../common/service/JsUtils.Service";
 import { GlobalMethod } from "./../../common/service/GlobalMethod";
 import { HttpReqService } from "../../common/service/HttpUtils.Service";
-import { loginInfo } from "../../common/config/BaseConfig";
+import { loginInfo, desConfig } from "../../common/config/BaseConfig";
+import { ForgetPasswordPage } from "./../forget-password/forget-password"; // 忘记密码
+import { FastLoginPage } from "../fast-login/fast-login"; // 快速登录
 import { PushService } from "../../common/service/Push.Service";
 import { BackButtonService } from "../../common/service/BackButton.Service";
 import { Local } from "../../common/service/Storage";
@@ -45,14 +47,14 @@ export class LoginPage {
     public gloService: GlobalService, // 全局自定义服务
     public fb: FormBuilder, // 响应式表单
     public jGPush: PushService, // 极光推送
-    public backBtnService: BackButtonService // 返回按钮处理
+    private backBtnService: BackButtonService // 返回按钮处理
   ) {
     this.platform.ready().then(() => {
       this.backBtnService.registerBackButtonAction(null); // 返回事件特殊处理
     });
 
     this.formData = this.fb.group({
-      num: ["", [Validators.required]], // 账号
+      username: ["", [Validators.required]], // 账号
       password: [
         "",
         [Validators.required, Validators.minLength(5), Validators.maxLength(16)]
@@ -72,7 +74,10 @@ export class LoginPage {
           loginObj.LoginState == "success"
         ) {
           // 判断以前是否登录成功过
-          console.error("=========loginInfo=======", loginInfo);
+          console.error(
+            "=================loginInfo=================",
+            loginInfo
+          );
 
           let loginHour = loginObj.LoginTime; // 登录成功小时数
           let curTime = new Date().getTime(); // 当前时间
@@ -86,7 +91,7 @@ export class LoginPage {
                 loginInfo[key] = loginObj[key];
               }
             }
-            // Local.set("sessionId", loginInfo.SessionId);
+            Local.set("sessionId", loginInfo.SessionId);
             this.ionicStorage.set("loginInfo", loginInfo); // 登录信息配置对象
             this.ionicStorage.set("userInfo", loginInfo["UserInfo"]); // 后台返回用户信息对象
             this.navCtrl.setRoot("MainPage"); // 跳转到主页
@@ -145,7 +150,7 @@ export class LoginPage {
         // 判断是否是空对象
         if (!_.isNull(loginObj.UserName)) {
           GlobalMethod.setForm(this.formData, {
-            num: loginInfo["UserName"]
+            username: loginInfo["UserName"]
           }); // 重新设置表单
         }
         if (!_.isNull(loginObj.Password)) {
@@ -168,17 +173,17 @@ export class LoginPage {
    */
   public openModalPage(pageName: string): void {
     let modalPage: any = "";
-    // if (pageName == "ForgetPasswordPage") {
-    //   // 忘记密码
-    //   modalPage = this.modalCtrl.create(ForgetPasswordPage, {
-    //     userId: ""
-    //   });
-    // } else if (pageName == "FastLoginPage") {
-    //   // 快速登录
-    //   modalPage = this.modalCtrl.create(FastLoginPage, {
-    //     userId: ""
-    //   });
-    // }
+    if (pageName == "ForgetPasswordPage") {
+      // 忘记密码
+      modalPage = this.modalCtrl.create(ForgetPasswordPage, {
+        userId: ""
+      });
+    } else if (pageName == "FastLoginPage") {
+      // 快速登录
+      modalPage = this.modalCtrl.create(FastLoginPage, {
+        userId: ""
+      });
+    }
     modalPage.present(); // 打开Modal页
   }
 
@@ -240,48 +245,58 @@ export class LoginPage {
 
     const loading = this.gloService.showLoading("正在登录，请稍候...");
 
-    // const newFormData: any = {};
-    // newFormData.__login = true;
-    // newFormData.__ajax = "json";
-    // newFormData.param_deviceType = "mobileApp"; // APP标识符
-    // newFormData.username = window["DesUtils"].encode(
-    //   formData.username,
-    //   desConfig.key
-    // );
-    // newFormData.password = window["DesUtils"].encode(
+    const newFormData: any = {};
+    newFormData.__login = true;
+    newFormData.__ajax = "json";
+    newFormData.param_deviceType = "mobileApp"; // APP标识符
+    newFormData.username = window["DesUtils"].encode(
+      formData.username,
+      desConfig.key
+    );
+    newFormData.password = window["DesUtils"].encode(
+      formData.password,
+      desConfig.key
+    );
+    // const testObj: any = {};
+    // testObj.__login = true;
+    // testObj.__ajax = "json";
+    // testObj.username = window["DesUtils"].encode(formData.phone, desConfig.key);
+    // testObj.password = window["DesUtils"].encode(
     //   formData.password,
     //   desConfig.key
     // );
 
-    this.httpReq.post("account/login", null, formData, (data: any) => {
-      if (data["status"] == 200) {
-        if (data["code"] == 0) {
-          this.gloService.showMsg("登录成功", null, 1000);
-          loading.dismiss();
-          loginInfo.LoginState = "success"; // 登录状态
-          loginInfo.LoginTime = new Date().getTime(); // 登录时间
-          loginInfo.UserName = formData.num; // 用户名
-          if (this.isRemPwd) {
-            // 是否记住密码
-            loginInfo.Password = formData.password; // 用户密码
-          } else {
-            loginInfo.Password = null; // 清除密码
-          }
-          loginInfo.LoginId = data["data"]["id"]; // 用户ID
-          loginInfo.UserInfo = data["data"]; // 后台返回用户信息对象
-          console.error("loginInfo", loginInfo);
-          this.ionicStorage.set("userInfo", data["data"]); // 后台返回用户信息对象
-          this.ionicStorage.set("loginInfo", loginInfo); // 登录信息配置对象
-          this.navCtrl.setRoot("MainPage"); // 跳转到主页
+    this.httpReq.get("home/a/login", newFormData, data => {
+      if (data["data"] && data["data"]["result"] == "true") {
+        this.gloService.showMsg("登录成功", null, 1000);
+        loading.dismiss();
+        loginInfo.LoginState = "success"; // 登录状态
+        loginInfo.LoginTime = new Date().getTime(); // 登录时间
+        loginInfo.UserName = formData.username; // 用户名
+        if (this.isRemPwd) {
+          // 是否记住密码
+          loginInfo.Password = formData.password; // 用户密码
         } else {
-          loading.dismiss();
-          this.gloService.showMsg(data["message"], null, 3000);
-          formData.password = ""; // 清除登录密码
-          GlobalMethod.setForm(this.formData, formData); // 重新设置表单
+          loginInfo.Password = null; // 清除密码
         }
+        loginInfo.UserInfo = data["data"]; // 后台返回用户信息对象
+        if (
+          data["data"] &&
+          data["data"]["user"] &&
+          data["data"]["user"]["extend"]
+        ) {
+          loginInfo.LoginId = data["data"]["user"]["extend"]["extendS1"]; // 登录者Token
+        }
+        if (data["data"] && data["data"]["sessionid"]) {
+          loginInfo.SessionId = data["data"]["sessionid"]; // 登录者Token
+          Local.set("sessionId", loginInfo.SessionId);
+        }
+        this.ionicStorage.set("userInfo", data["data"]); // 后台返回用户信息对象
+        this.ionicStorage.set("loginInfo", loginInfo); // 登录信息配置对象
+        this.navCtrl.setRoot("MainPage"); // 跳转到主页
       } else {
         loading.dismiss();
-        this.gloService.showMsg("请求服务器出错", null, 3000);
+        this.gloService.showMsg("登录失败", null, 3000);
         formData.password = ""; // 清除登录密码
         GlobalMethod.setForm(this.formData, formData); // 重新设置表单
       }

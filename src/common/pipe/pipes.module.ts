@@ -6,7 +6,6 @@ import { SexStatePipe } from "./pipes/SexState.Pipe";
 import { EducationLevelPipe } from "./pipes/EducationLevel.Pipe";
 import { PoliticalStatePipe } from "./pipes/PoliticalState.Pipe";
 import { DefaultNumState } from "./pipes/DefaultNum.Pipe";
-import { OrderByPipe } from "./pipes/OrderBy.Pipe";
 @NgModule({
   declarations: [
     OrderStatePipe,
@@ -14,7 +13,6 @@ import { OrderByPipe } from "./pipes/OrderBy.Pipe";
     SexStatePipe,
     EducationLevelPipe,
     PoliticalStatePipe,
-    OrderByPipe,
     DefaultNumState
   ],
   imports: [IonicModule],
@@ -24,8 +22,7 @@ import { OrderByPipe } from "./pipes/OrderBy.Pipe";
     SexStatePipe,
     EducationLevelPipe,
     PoliticalStatePipe,
-    DefaultNumState,
-    OrderByPipe
+    DefaultNumState
   ]
 })
 export class PipesModule {}

@@ -33,16 +33,14 @@ dist/
 node_modules/
 tmp/
 temp/
-plugins/
 platforms/
-plugins/
+# plugins/
 www - 副本/
 plugins/android.json
 plugins/ios.json
-/www
+www/
 $RECYCLE.BIN/
 
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
-package-lock.json

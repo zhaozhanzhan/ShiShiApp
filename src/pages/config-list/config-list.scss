@@ -1,0 +1,52 @@
+page-config-list {
+    .iconBg1 {
+        background: linear-gradient(120deg, #FFA366, #FFC347) !important;
+    }
+    .iconBg2 {
+        background: linear-gradient(120deg, #4897F0, #29DAE9) !important;
+    }
+    .iconBg3 {
+        background: linear-gradient(120deg, #FD5264, #FF71BF) !important;
+    }
+    .parentBox {
+        .childListHide {
+            position: relative;
+            .childListCtrl {
+                display: none;
+                overflow: hidden;
+            }
+        }
+        .childListShow {
+            position: relative;
+            .childListCtrl {
+                display: block;
+                overflow: scroll;
+                // max-height: 500px;
+                // background: #F00;
+                // animation: open 2s ease 0s 1 normal forwards;
+            }
+        }
+    }
+    @keyframes open {
+        0% {
+            // height: 0px;
+            max-height: 10px;
+        }
+        100% {
+            // height: 100% !important;
+            max-height: 500px;
+        }
+    }
+    /* .childListActive {
+        background: #F00;
+        animation: open 5s ease 0s 1 normal forwards;
+    }
+    @keyframes open {
+        0% {
+            height: 0px;
+        }
+        100% {
+            height: 200px;
+        }
+    } */
+}

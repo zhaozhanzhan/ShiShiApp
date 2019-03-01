@@ -15,7 +15,7 @@ import { GlobalService } from "../../common/service/GlobalService";
 import { loginInfo } from "../../common/config/BaseConfig";
 import { LoginPage } from "../login/login";
 import { BackButtonService } from "../../common/service/BackButton.Service";
-// import { Local } from "../../common/service/Storage";
+import { Local } from "../../common/service/Storage";
 // import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 // import { FormValidService } from "../../common/service/FormValid.Service";
 // import { JsUtilsService } from "../../common/service/JsUtils.Service";
@@ -27,7 +27,7 @@ import { BackButtonService } from "../../common/service/BackButton.Service";
 })
 export class SideMenuPage implements OnInit {
   public loginName: string = null; // 登录者姓名
-  public loginNum: string = null; // 登录者账号
+  public loginPhone: string = null; // 登录者手机
 
   constructor(
     // private jsUtil: JsUtilsService, // 自定义JS工具类
@@ -56,9 +56,11 @@ export class SideMenuPage implements OnInit {
       console.error("loginInfo", loginInfo);
       if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
         // 判断是否是空对象
+        if (!_.isNull(loginObj["UserName"])) {
+          this.loginPhone = loginObj["UserName"];
+        }
         if (!_.isNull(loginObj["UserInfo"])) {
-          this.loginName = loginObj["UserInfo"]["name"];
-          this.loginNum = loginObj["UserInfo"]["num"];
+          this.loginName = loginObj["UserInfo"]["workerName"];
         }
       }
     });
@@ -84,7 +86,7 @@ export class SideMenuPage implements OnInit {
         loginInfo[key] = null;
       }
     }
-    // Local.set("sessionId", "");
+    Local.set("sessionId", "");
     this.ionicStorage.set("loginInfo", loginInfo); // 登录信息配置对象
     this.ionicStorage.set("userInfo", loginInfo["UserInfo"]); // 后台返回用户信息对象
   }

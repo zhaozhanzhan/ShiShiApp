@@ -1,0 +1,155 @@
+<!-- 导航条区域 Begin -->
+<ion-header>
+    <ion-navbar color="orange" hideBackButton="true">
+        <ion-title>个人信息</ion-title>
+        <ion-buttons start>
+            <button ion-button class="pl10" (click)="backHome()">
+                <!-- <span color="primary" showWhen="ios">返回</span> -->
+                <ion-icon class="ftz30" name="ios-home" showWhen="android,windows,ios"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button class="pr10" (click)="navCtrl.canGoBack()?navCtrl.pop():''">
+                <span showWhen="android,windows,ios">返回</span>
+                <!-- <ion-icon class="ftz30" name="ios-home" showWhen="android,windows,ios"></ion-icon> -->
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar mode="ios" no-padding class="borTBox">
+        <div class="h100 w100p p10 headerBg">
+            <div class="h100p w100p disFlex">
+                <div class="h100p w100">
+                    <div class="w100p h100p disFlex justConC aligIteC">
+                        <!-- <img class="h100p borRadius50p" src="assets/imgs/logoback.png"> -->
+                        <div class="w40 h40 borSDBDFE6 bgcFFF">
+                            <div class="h100p borRadius50p disFlex justConC aligIteC" [hidden]="(formInfo?.userSex == 1)">
+                                <svg class="colourIcon ftz50" aria-hidden="true">
+                                    <use xlink:href="#icon-Head2"></use>
+                                </svg>
+                            </div>
+                            <div class="h100p borRadius50p disFlex justConC aligIteC" [hidden]="!(formInfo?.userSex == 1)">
+                                <svg class="colourIcon ftz50" aria-hidden="true">
+                                    <use xlink:href="#icon-Head1"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- <img class="h100p borRadius50p" src="https://via.placeholder.com/150"> -->
+                    </div>
+                </div>
+                <div class="h100p disFlex flexDirC justConSA pt10 pb10">
+                    <div>
+                        <span class="ftz20 colorFFF">{{formInfo?.caption}}</span>
+                        <span class="ml20 colorFFF">{{formInfo?.userSex | sexState}}</span>
+                    </div>
+                    <div>
+                        <span class="colorFFF">工号：{{formInfo?.personCode}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+<!-- 导航条区域 End -->
+
+<!-- 页面内容区域 Begin -->
+<ion-content>
+    <div>
+        <div>
+            <div class="p10">
+                <div class="h30 disFlex aligItec">
+                    <span class="ftz16">{{formInfo?.station?.caption}}</span>
+                </div>
+                <div class="disFlex justConSB h30 aligItec">
+                    <div>
+                        <span class="ftz16">年龄：{{formInfo?.userAge}}岁</span>
+                    </div>
+                    <div>
+                        <span class="ftz16">电话：{{formInfo?.telephone}}</span>
+                    </div>
+                </div>
+                <div class="disFlex justConSB h30 aligItec">
+                    <div>
+                        <span class="ftz16">文化程度：{{formInfo?.culture | educationLevelState}}</span>
+                    </div>
+                    <div>
+                        <span class="ftz16">政治面貌：{{formInfo?.polity | politicalState}}</span>
+                    </div>
+                </div>
+                <div class="disFlex">
+                    <div class="flexShrink0">
+                        <span class="ftz16">居住地：</span>
+                    </div>
+                    <div class="flexShrink1">
+                        <span class="ftz16">{{formInfo?.address}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="p10 mt10">
+                <div>
+                    <div>
+                        <div class="borBBox">
+                            <div class="disFlex justConSB h26 aligItec">
+                                <span class="ftz16">证件资料：</span>
+                            </div>
+                        </div>
+                        <div class="pt10" *ngIf="formInfo.fileUploads && formInfo.fileUploads.length > 0">
+                            <div class="w240 h160 mb10" *ngFor="let x of formInfo.fileUploads;let i = index;" (click)="prevImg(formInfo.fileUploads,i)">
+                                <div class="h100p w100p disFlex justConC aligIteC borB7D8E0">
+                                    <img *ngIf="(x.fileUrl)" class="h100p w100p" [src]="baseImgUrl + x.fileUrl">
+                                    <svg *ngIf="!(x.fileUrl)" class="colourIcon ftz60" aria-hidden="true">
+                                        <use xlink:href="#icon-Cert6"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div>
+                        <div class="borBBox">
+                            <div class="disFlex justConSB h26 aligItec">
+                                <span class="ftz16">健康证明：</span>
+                            </div>
+                        </div>
+                        <div class="pt10">
+                            <div class="w150 h150">
+                                <div class="h100p w100p disFlex justConC aligIteC borB7D8E0">
+                                    <svg class="colourIcon ftz60" aria-hidden="true">
+                                        <use xlink:href="#icon-Cert6"></use>
+                                    </svg>
+                                </div>
+                                <img class="h100p w100p" src="https://via.placeholder.com/150">
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- <div class="mt20">
+                        <div class="borBBox">
+                            <div class="disFlex justConSB h26 aligItec">
+                                <span class="ftz16">等级证书：</span>
+                            </div>
+                        </div>
+                        <div class="pt10">
+                            <div class="w150 h150">
+                                <div class="h100p w100p disFlex justConC aligIteC borB7D8E0">
+                                    <svg class="colourIcon ftz60" aria-hidden="true">
+                                        <use xlink:href="#icon-Cert3"></use>
+                                    </svg>
+                                </div>
+                                <img class="h100p w100p" src="https://via.placeholder.com/150">
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 图片预览组件 Begin -->
+    <photo-prev #photoPrev></photo-prev>
+    <!-- 图片预览组件 End -->
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <div class="w100p" text-center>
+            <button ion-button round class="w90p" color="danger" (click)="exit('login')">退出登录</button>
+        </div>
+    </ion-toolbar>
+</ion-footer>
+<!-- 页面内容区域 End -->

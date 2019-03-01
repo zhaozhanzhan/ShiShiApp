@@ -37,31 +37,12 @@ export class HomePage {
   @ViewChild(Content)
   content: Content;
 
-  public reqUrl: string = "foodRetention/list"; // 请求数据URL
+  public reqUrl: string = "home/a/oldfolksinfo/homeOldFolksInfo/listOldData"; // 请求数据URL
   public sendData: any = {}; // 定义请求数据时的对象
   public dataList: Array<any> = []; // 数据列表
   public isShowNoData: boolean = false; // 给客户提示没有更多数据
   public infiniteScroll: InfiniteScroll = null; // 上拉加载事件对象
-  // public recOrderState: boolean = false; // 定义接单状态
-  // public noHandleOrderNum: any = null; // 未处理订单数量
-  // public isOpenSer: boolean = false; // 是否已经开启服务
-  // public nfcId: any = null; // nfcId
-  // public workID: any = null; // 服务ID
-  // public timerInter: any = null; // 定时器
-
-  // public beginTime: any = null; // 服务开始时间
-  // public endTime: any = null; // 服务终止时间
-  // public nowTime: any = null; // 服务当前时间
-  // public maxTime: any = null; // 服务最大超时时间
-  // public manyMinutes: any = 2; // 多少分钟后应该结束服务
-  // public remindMinutes: any = 1; // 每隔几分钟提醒
-  // public remindTimeArr: any = []; // 提醒时间点时间戳数组
-  // public totalRemind: any = 3; // 总提醒次数
-  // public remindNum: any = null; // 剩余提醒次数
-  // public beginDura: any = "00:00:00"; // 时长
-  // public hours: any = "00"; // 时
-  // public minutes: any = "00"; // 分
-  // public seconds: any = "00"; // 秒
+  public serName: string = null; // 查询姓名
 
   constructor(
     // private fb: FormBuilder, // 响应式表单
@@ -83,9 +64,11 @@ export class HomePage {
     public serNotifi: ServiceNotification // 服务开启定时通知关闭
   ) {}
 
-  ionViewDidLoad() {
-    this.sendData.page = pageObj.currentPage; // 定义当前页码
-    this.sendData.size = pageObj.everyItem; // 定义当前页面请求条数
+  ionViewDidLoad() {}
+
+  ionViewDidEnter() {
+    this.sendData.pageNo = pageObj.currentPage; // 定义当前页码
+    this.sendData.pageSize = pageObj.everyItem; // 定义当前页面请求条数
     this.sendData.totalPage = pageObj.totalPage; // 定义当前页面请求条数
     // 请求列表数据
     this.reqData(
@@ -93,6 +76,7 @@ export class HomePage {
       this.sendData,
       (res: any) => {
         // 请求数据成功
+        this.dataList = [];
         this.dataList = this.dataList.concat(res);
         console.error("this.sendData", this.sendData);
       },
@@ -101,28 +85,25 @@ export class HomePage {
         this.dataList = this.dataList.concat(err);
       }
     );
-  }
-
-  ionViewDidEnter() {
-    this.ionicStorage.get("loginInfo").then(loginObj => {
-      if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
-        // 判断是否是空对象
-        console.error("loginObj========", loginObj);
-        const loginId = loginObj.LoginId;
-        if (_.isString(loginId) && loginId.length > 0) {
-          const sendData: any = {};
-          sendData.serverPersonID = loginId;
-        } else {
-          this.serNotifi.closeServer(); // 关闭定时服务
-          this.gloService.showMsg("未获取到用户ID!");
-        }
-      } else {
-        // this.isOpenSer = false;
-        this.serNotifi.closeServer(); // 关闭定时服务
-        this.gloService.showMsg("未获取到用户ID!");
-      }
-    });
-    console.error("this.navCtrl", this.navCtrl);
+    // this.ionicStorage.get("loginInfo").then(loginObj => {
+    //   if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
+    //     // 判断是否是空对象
+    //     console.error("loginObj========", loginObj);
+    //     const loginId = loginObj.LoginId;
+    //     if (_.isString(loginId) && loginId.length > 0) {
+    //       const sendData: any = {};
+    //       sendData.serverPersonID = loginId;
+    //     } else {
+    //       this.serNotifi.closeServer(); // 关闭定时服务
+    //       this.gloService.showMsg("未获取到用户ID!");
+    //     }
+    //   } else {
+    //     // this.isOpenSer = false;
+    //     this.serNotifi.closeServer(); // 关闭定时服务
+    //     this.gloService.showMsg("未获取到用户ID!");
+    //   }
+    // });
+    // console.error("this.navCtrl", this.navCtrl);
     // this.initNfcListener(); // 初始化NFC监听
 
     //=================订阅NFC扫描成功事件 Begin=================//
@@ -160,7 +141,7 @@ export class HomePage {
   }
 
   ionViewWillLeave() {
-    // this.events.unsubscribe("nfcScanSuc"); // 取消NFC扫描成功事件
+    this.events.unsubscribe("nfcScanSuc"); // 取消NFC扫描成功事件
   }
 
   /**
@@ -230,19 +211,14 @@ export class HomePage {
    * @memberof ConsignorListPage
    */
   public reqData(url: string, reqObj: any, suc: Function, err: Function) {
-    this.httpReq.post(url, null, reqObj, (data: any) => {
-      if (data["status"] == 200) {
-        if (data["code"] == 0) {
-          this.sendData.totalPage = GlobalMethod.calTotalPage(
-            data["data"]["totalElements"],
-            this.sendData.size
-          ); //定义当前总页数
-          suc(data["data"]["content"]);
-          // this.dataList = this.dataList.concat(data["data"]);
-        } else {
-          this.gloService.showMsg(data["message"], null, 3000);
-          err([]);
-        }
+    this.httpReq.get(url, reqObj, (data: any) => {
+      if (data && !_.isEmpty(data)) {
+        this.sendData.totalPage = GlobalMethod.calTotalPage(
+          data["data"]["count"],
+          this.sendData.pageSize
+        ); //定义当前总页数
+        suc(data["data"]["list"]);
+        // this.dataList = this.dataList.concat(data["data"]);
       } else {
         // this.gloService.showMsg("请求服务器出错", null, 3000);
         err([]);
@@ -258,8 +234,8 @@ export class HomePage {
    * @memberof ConsignorListPage
    */
   public downRefresh(ev: Refresher, url: string, reqObj: any) {
-    reqObj.page = pageObj.currentPage; //重置当前页码
-    reqObj.size = pageObj.everyItem; //重置当前页面请求条数
+    reqObj.pageNo = pageObj.currentPage; //重置当前页码
+    reqObj.pageSize = pageObj.everyItem; //重置当前页面请求条数
     console.error("下拉刷新执行");
     this.reqData(
       url,
@@ -297,10 +273,10 @@ export class HomePage {
    */
   public upLoad(ev: InfiniteScroll, url: string, reqObj: any) {
     this.infiniteScroll = ev; // 保留上拉加载事件对象
-    reqObj.page++; // 当前页码加1
-    if (reqObj.page > reqObj.totalPage) {
+    reqObj.pageNo++; // 当前页码加1
+    if (reqObj.pageNo > reqObj.totalPage) {
       //判断当前页面页码是否大于总页数
-      reqObj.page--;
+      reqObj.pageNo--;
       setTimeout(() => {
         ev.complete();
         this.isShowNoData = true; // 提示没有更多数据
@@ -318,7 +294,7 @@ export class HomePage {
           }, 1000);
         },
         (err: any) => {
-          reqObj.page--; // 失败页码减1
+          reqObj.pageNo--; // 失败页码减1
           this.dataList = this.dataList.concat(err); // 添加新增数据
           setTimeout(() => {
             ev.complete(); // 关闭上拉加载动画
@@ -389,8 +365,8 @@ export class HomePage {
     // console.error(this.reqUrl, this.sendData);
     const url = that.reqUrl;
     const reqObj = that.sendData;
-    reqObj.page = pageObj.currentPage; //重置当前页码
-    reqObj.size = pageObj.everyItem; //重置当前页面请求条数
+    reqObj.pageNo = pageObj.currentPage; //重置当前页码
+    reqObj.pageSize = pageObj.everyItem; //重置当前页面请求条数
     console.error("reqObj", reqObj);
     that.reqData(
       url,

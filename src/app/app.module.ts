@@ -22,7 +22,6 @@ import { NativeAudio } from "@ionic-native/native-audio"; // 音频播放
 import { Vibration } from "@ionic-native/vibration"; // 震动插件
 import { QRScanner } from "@ionic-native/qr-scanner"; // 条码、二维码扫描
 import { Media } from "@ionic-native/media"; // 录音及音频播放
-import { BLE } from "@ionic-native/ble"; // 蓝牙插件
 import { AppAvailability } from "@ionic-native/app-availability"; // 检查用户设备安装了某应用程序
 import { AndroidPermissions } from "@ionic-native/android-permissions"; // Android权限控制
 import { OpenNativeSettings } from "@ionic-native/open-native-settings"; // 系统设置
@@ -33,11 +32,15 @@ import * as ionicGalleryModal from "ionic-gallery-modal"; // 图片预览模块
 import { MainPageModule } from "../pages/main/main.module";
 import { MyApp } from "./app.component"; // 根组件
 import { LoginPage } from "./../pages/login/login"; // 登录页面
+import { ForgetPasswordPage } from "./../pages/forget-password/forget-password"; // 忘记密码
+import { FastLoginPage } from "../pages/fast-login/fast-login"; // 快速登录
 
 @NgModule({
   declarations: [
     MyApp, // 根组件
-    LoginPage // 登录页面
+    LoginPage, // 登录页面
+    ForgetPasswordPage, // 忘记密码
+    FastLoginPage // 快速登录
   ],
   imports: [
     BrowserModule,
@@ -56,7 +59,9 @@ import { LoginPage } from "./../pages/login/login"; // 登录页面
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp, // 根组件
-    LoginPage // 登录页面
+    LoginPage, // 登录页面
+    ForgetPasswordPage, // 忘记密码
+    FastLoginPage // 快速登录
   ],
   providers: [
     JPush, // 极光推送
@@ -74,7 +79,6 @@ import { LoginPage } from "./../pages/login/login"; // 登录页面
     NativeAudio, // 音频播放
     Vibration, // 震动插件
     QRScanner, // 条码、二维码扫描
-    BLE, // 蓝牙
     Media, // 录单及音频播放
     NFC, // NFC
     InAppBrowser, // 打开浏览器

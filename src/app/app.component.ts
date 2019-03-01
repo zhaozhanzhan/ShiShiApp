@@ -30,7 +30,7 @@ import { LocalNotifications } from "@ionic-native/local-notifications";
 import { ServiceNotification } from "../common/service/ServiceNotification";
 import { Local } from "../common/service/Storage";
 
-// declare var cordova: any; //导入第三方的库定义到 TS 项目中
+declare var cordova: any; //导入第三方的库定义到 TS 项目中
 
 @Component({
   templateUrl: "app.html" // 根页面View区域
@@ -107,7 +107,7 @@ export class MyApp implements AfterViewInit {
       //=================是否第一次开启应用 End=================//
 
       //=================获取GPS权限处理 Begin=================//
-      /* const gpsPermission = this.androidPermissions.PERMISSION
+      const gpsPermission = this.androidPermissions.PERMISSION
         .ACCESS_FINE_LOCATION;
 
       this.androidPermissions.checkPermission(gpsPermission).then(
@@ -173,7 +173,7 @@ export class MyApp implements AfterViewInit {
           });
           //=================是否第一次开启应用 End=================//
         }
-      ); */
+      );
 
       // setInterval(() => {
       //   this.getGpsInfo(); // 提交GPS信息给后台
@@ -181,7 +181,7 @@ export class MyApp implements AfterViewInit {
       //=================获取GPS权限处理 End=================//
 
       //=================获取通知权限处理 Begin=================//
-      /* this.localNotifications.hasPermission().then(
+      this.localNotifications.hasPermission().then(
         notifiPermission => {
           console.error("notifiPermission权限=======", notifiPermission);
           if (!notifiPermission) {
@@ -205,7 +205,7 @@ export class MyApp implements AfterViewInit {
           }
           this.openNotifiSetting(); // 打开通知权限设置页面提示
         }
-      ); */
+      );
 
       // const notifiPermission = this.androidPermissions.PERMISSION
       //   .BIND_NOTIFICATION_LISTENER_SERVICE;

@@ -292,7 +292,7 @@ export class ServiceNotification {
     // );
     this.localNotif.schedule({
       id: 1,
-      title: "居家APP",
+      title: "居家养老实施APP",
       text: "服务时间已到达，可关闭服务！",
       sound: "file://assets/wav/overtime4.mp3"
     });

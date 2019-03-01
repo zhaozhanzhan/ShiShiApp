@@ -9,8 +9,7 @@ import { Injectable } from "@angular/core"; // 注入服务注解
 import {
   ToastController,
   LoadingController,
-  AlertController,
-  Platform
+  AlertController
 } from "ionic-angular"; // Ionic Toast消息控制器
 import { File } from "@ionic-native/file";
 import { GlobalMethod } from "./GlobalMethod";
@@ -21,7 +20,6 @@ export class GlobalService {
     private toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public file: File, // 文件
-    public plt: Platform, // 文件
     public alertCtrl: AlertController // Alert消息弹出框
   ) {}
 
@@ -167,19 +165,5 @@ export class GlobalService {
       ]
     });
     alert.present();
-  }
-
-  /**
-   * 获取手机平台
-   * @memberof GlobalService
-   */
-  public getPlatform() {
-    if (this.plt.is("ios") && !this.plt.is("mobileweb")) {
-      return "ios";
-    } else if (this.plt.is("android") && !this.plt.is("mobileweb")) {
-      return "android";
-    } else {
-      return "pc";
-    }
   }
 }

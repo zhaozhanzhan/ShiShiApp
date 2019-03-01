@@ -11,27 +11,27 @@
 // const ip = "180.103.210.106:8081";// 公网IP+端口
 // const ip = "139.196.204.226:8980"; // 公网IP+端口 测试服
 // const ip = "180.103.210.106:8088"; // 公网IP+端口 测试服
-const ipDownload = "base.sunsetcare-mirrortech.com"; // 下载文件 测试服
+const ipDownload = "121.227.30.184:8081"; // 下载文件 测试服
 // const ip = "192.168.1.129:9999"; // 内网IP+端口
 // const ip = "192.168.1.118:8081"; // 内网IP+端口
 // const ip = "192.168.1.118:8088"; // 内网IP+端口
 // const ip = "192.168.1.222:8088"; // 内网IP+端口
-// const ip = "192.168.1.128:8080"; // 内网IP+端口 朱石磊
-// const ip = "192.168.1.139:8980"; // 内网IP+端口 倪维巍
-// const ip = "139.224.12.181:8980"; // 公网IP+端口
-// const ip = "139.224.12.181:38090"; // 公网IP+端口
+// const ip = "192.168.1.128:8980"; // 内网IP+端口 朱石磊
+const ip = "192.168.1.108:8980"; // 内网IP+端口 倪维巍
+// const ip = "121.227.30.184:8980"; // 公网IP+端口
+
+// const ip = "139.224.12.181:8988"; // 公网IP+端口
+
 // const ip = "139.224.12.181:8989"; // 公网测试IP+端口
-const ip = "139.224.12.181:38090"; // IP+端口 演示平台
 
 //================= 服务器IP + 端口配置 End =================//
 
 //================= 请求地址配置对象 Begin =================//
 export const reqObj = {
-  // baseUrl: "http://" + ip + "/",
-  baseUrl: "http://" + ip + "/BasicProject/",
+  baseUrl: "http://" + ip + "/",
   baseImgUrl: "http://" + ip + "/home/", // 基础图片URL
-  andUpdAppUrl:
-    "http://" + ipDownload + "/DietSafetyApp/DietSafetyAppDownload/update.apk", // 安卓下载更新APP包地址
+  andUpdAppUrl: "http://" + ipDownload + "/JuJiaAppDownload/update.apk", // 安卓下载更新APP包地址
+  pdfReadApp: "http://" + ipDownload + "/JuJiaAppDownload/AdobeReader.apk", // PDF阅读器下载APP包地址
   iosUpdAppUrl:
     "itms-apps://itunes.apple.com/us/app/domainsicle-domain-name-search/id511364723?ls=1&mt=8" // IOS下载更新APP包地址
 };
@@ -58,8 +58,8 @@ export const desConfig = {
 //================= 分页参数配置对象 Begin =================//
 export const pageObj = {
   totalItem: 100, //总条数
-  currentPage: 0, //当前页码
+  currentPage: 1, //当前页码
   totalPage: 99, //总页码
-  everyItem: 10 //每页条数
+  everyItem: 20 //每页条数
 };
 //================= 分页参数配置对象 End =================//

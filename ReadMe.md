@@ -149,13 +149,21 @@ configurations.all {
 ```
 
 ```
-    <chcp>
-        <config-file url="http://base.sunsetcare-mirrortech.com/DietSafetyApp/DietSafetyAppUpdate/chcp.json" />
-        <auto-download enabled="true" />
-        <auto-install enabled="true" />
-        <local-development enabled="true" />
-        <native-interface version="1" />
-    </chcp>
+<chcp>
+    <config-file url="http://192.168.1.129:7777/www/chcp.json" />
+    <auto-download enabled="true" />
+    <auto-install enabled="true" />
+    <local-development enabled="true" />
+    <native-interface version="1" />
+</chcp>
+
+<chcp>
+  <config-file url="http://121.227.30.184:8081/JuJiaAppUpdate/chcp.json" />
+  <auto-download enabled="true" />
+  <auto-install enabled="true" />
+  <local-development enabled="true" />
+  <native-interface version="1" />
+</chcp>
 
     ionic build --prod
 
