@@ -157,13 +157,13 @@ configurations.all {
     <native-interface version="1" />
 </chcp>
 
-<chcp>
-  <config-file url="http://121.227.30.184:8081/JuJiaAppUpdate/chcp.json" />
-  <auto-download enabled="true" />
-  <auto-install enabled="true" />
-  <local-development enabled="true" />
-  <native-interface version="1" />
-</chcp>
+    <chcp>
+        <config-file url="http://121.227.30.184:8081/JuJiaAppUpdate/chcp.json" />
+        <auto-download enabled="true" />
+        <auto-install enabled="true" />
+        <local-development enabled="true" />
+        <native-interface version="1" />
+    </chcp>
 
     ionic build --prod
 

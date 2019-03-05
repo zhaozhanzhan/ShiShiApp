@@ -3,14 +3,7 @@
     <name>居家养老实施APP</name>
     <description>镜子信息技术有限公司居家养老实施APP</description>
     <author email="799316652@qq.com" href="http://ionicframework.com/">ZZZ</author>
-    <chcp>
-        <config-file url="http://121.227.30.184:8081/JuJiaAppUpdate/chcp.json" />
-        <auto-download enabled="true" />
-        <auto-install enabled="true" />
-        <local-development enabled="true" />
-        <native-interface version="1" />
-    </chcp>
-    <content original-src="index.html" src="http://192.168.1.129:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
