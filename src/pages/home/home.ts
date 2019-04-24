@@ -15,7 +15,6 @@ import {
   Refresher
 } from "ionic-angular";
 import { NativeAudio } from "@ionic-native/native-audio";
-import { Storage } from "@ionic/storage";
 import { NFC } from "@ionic-native/nfc"; // NFC
 import _ from "underscore"; // 工具类
 import { GlobalService } from "../../common/service/GlobalService";
@@ -23,7 +22,10 @@ import { HttpReqService } from "../../common/service/HttpUtils.Service";
 import { ParamService } from "../../common/service/Param.Service";
 import { ServiceNotification } from "../../common/service/ServiceNotification";
 import { GlobalMethod } from "../../common/service/GlobalMethod";
-import { pageObj } from "../../common/config/BaseConfig";
+import { pageObj, loginInfo } from "../../common/config/BaseConfig";
+import { LoginPage } from "../login/login";
+import { Local } from "../../common/service/Storage";
+import { Storage } from "@ionic/storage";
 // import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 // import { FormValidService } from "../../common/service/FormValid.Service";
 // import { JsUtilsService } from "../../common/service/JsUtils.Service";
@@ -37,7 +39,8 @@ export class HomePage {
   @ViewChild(Content)
   content: Content;
 
-  public reqUrl: string = "home/a/oldfolksinfo/homeOldFolksInfo/listOldData"; // 请求数据URL
+  public reqUrl: string =
+    "home/a/oldfolksinfo/homeOldFolksInfo/implementationListOldData"; // 请求数据URL
   public sendData: any = {}; // 定义请求数据时的对象
   public dataList: Array<any> = []; // 数据列表
   public isShowNoData: boolean = false; // 给客户提示没有更多数据
@@ -47,9 +50,9 @@ export class HomePage {
   constructor(
     // private fb: FormBuilder, // 响应式表单
     // private jsUtil: JsUtilsService, // 自定义JS工具类
+    private ionicStorage: Storage, // IonicStorage
     public app: App,
     private httpReq: HttpReqService, // Http请求服务
-    private ionicStorage: Storage, // IonicStorage
     public nfc: NFC, // NFC
     public navCtrl: NavController, // 导航控制器
     public navParams: NavParams, // 导航参数传递控制
@@ -64,27 +67,56 @@ export class HomePage {
     public serNotifi: ServiceNotification // 服务开启定时通知关闭
   ) {}
 
-  ionViewDidLoad() {}
-
-  ionViewDidEnter() {
-    this.sendData.pageNo = pageObj.currentPage; // 定义当前页码
-    this.sendData.pageSize = pageObj.everyItem; // 定义当前页面请求条数
-    this.sendData.totalPage = pageObj.totalPage; // 定义当前页面请求条数
-    // 请求列表数据
-    this.reqData(
-      this.reqUrl,
-      this.sendData,
-      (res: any) => {
-        // 请求数据成功
-        this.dataList = [];
-        this.dataList = this.dataList.concat(res);
-        console.error("this.sendData", this.sendData);
+  ionViewDidLoad() {
+    this.ionicStorage.get("loginInfo").then(
+      loginObj => {
+        if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
+          if (
+            !_.isNull(loginObj.LoginState) &&
+            loginObj.LoginState == "success"
+          ) {
+            this.sendData.pageNo = pageObj.currentPage; // 定义当前页码
+            this.sendData.pageSize = pageObj.everyItem; // 定义当前页面请求条数
+            this.sendData.totalPage = pageObj.totalPage; // 定义当前页面请求条数
+            this.sendData.loginCode = loginObj.UserInfo.user.loginCode; // 定义当前页面请求条数
+            // 请求列表数据
+            this.reqData(
+              this.reqUrl,
+              this.sendData,
+              (res: any) => {
+                // 请求数据成功
+                this.dataList = [];
+                this.dataList = this.dataList.concat(res);
+                console.error("this.sendData", this.sendData);
+              },
+              (err: any) => {
+                // 请求数据失败
+                this.dataList = this.dataList.concat(err);
+              }
+            );
+          } else {
+            this.gloService.showMsg("未获取到用户ID", null, 3000);
+            if (this.navCtrl.canGoBack()) {
+              this.navCtrl.pop();
+            }
+          }
+        } else {
+          this.gloService.showMsg("未获取到LoginCode", null, 3000);
+          if (this.navCtrl.canGoBack()) {
+            this.navCtrl.pop();
+          }
+        }
       },
-      (err: any) => {
-        // 请求数据失败
-        this.dataList = this.dataList.concat(err);
+      err => {
+        this.gloService.showMsg("未获取到LoginCode", null, 3000);
+        if (this.navCtrl.canGoBack()) {
+          this.navCtrl.pop();
+        }
       }
     );
+  }
+
+  ionViewDidEnter() {
     // this.ionicStorage.get("loginInfo").then(loginObj => {
     //   if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
     //     // 判断是否是空对象
@@ -105,7 +137,6 @@ export class HomePage {
     // });
     // console.error("this.navCtrl", this.navCtrl);
     // this.initNfcListener(); // 初始化NFC监听
-
     //=================订阅NFC扫描成功事件 Begin=================//
     // this.events.subscribe("nfcScanSuc", (nfcId: any) => {
     //   if (this.isOpenSer) {
@@ -131,7 +162,6 @@ export class HomePage {
     //   }
     // });
     //=================订阅NFC扫描成功事件 End=================//
-
     // ParamService.setParamNfc(null);
     // ParamService.setParamId(null);
     // console.error("ParamService.getParamNfc", ParamService.getParamNfc());
@@ -150,6 +180,33 @@ export class HomePage {
    */
   public toggleMenu() {
     this.menuCtrl.toggle();
+  }
+
+  /**
+   * 查询列表数据
+   * @memberof HomePage
+   */
+  public serListData(name) {
+    this.sendData.pageNo = pageObj.currentPage; // 定义当前页码
+    this.sendData.pageSize = pageObj.everyItem; // 定义当前页面请求条数
+    this.sendData.totalPage = pageObj.totalPage; // 定义当前页面请求条数
+    this.sendData.name = name; // 传过来的参数
+    this.sendData.loginCode = loginInfo.UserInfo.user.loginCode; // 定义当前页面请求条数
+    // 请求列表数据
+    this.reqData(
+      this.reqUrl,
+      this.sendData,
+      (res: any) => {
+        // 请求数据成功
+        this.dataList = [];
+        this.dataList = this.dataList.concat(res);
+        console.error("this.sendData", this.sendData);
+      },
+      (err: any) => {
+        // 请求数据失败
+        this.dataList = this.dataList.concat(err);
+      }
+    );
   }
 
   /**
@@ -212,7 +269,7 @@ export class HomePage {
    */
   public reqData(url: string, reqObj: any, suc: Function, err: Function) {
     this.httpReq.get(url, reqObj, (data: any) => {
-      if (data && !_.isEmpty(data)) {
+      if (data && data["data"] && _.isArray(data["data"]["list"])) {
         this.sendData.totalPage = GlobalMethod.calTotalPage(
           data["data"]["count"],
           this.sendData.pageSize
@@ -396,5 +453,100 @@ export class HomePage {
    */
   public noDevTit() {
     this.gloService.showMsg("该功能正在加急开发中...", null, 2000);
+  }
+
+  /**
+   * 退出提示
+   * @param {string} type
+   * @memberof SideMenuPage
+   */
+  public exit(type: string) {
+    const titArr = [
+      {
+        title: "退出账号",
+        message: "确认退出当前账号吗?",
+        buttonTxt1: "取消",
+        buttonTxt2: "确认"
+      },
+      {
+        title: "退出应用",
+        message: "确认退出当前应用吗?",
+        buttonTxt1: "取消",
+        buttonTxt2: "确认"
+      }
+    ];
+    this.menuCtrl.close(); // 关闭侧滑菜单
+    if (type == "login") {
+      this.openAlert(
+        titArr[0],
+        () => {
+          this.exitLogin(); // 退出登录
+        },
+        () => {}
+      );
+    } else if (type == "app") {
+      this.openAlert(
+        titArr[1],
+        () => {
+          this.exitApp(); // 退出应用
+        },
+        () => {}
+      );
+    }
+  }
+
+  /**
+   * 清除登录信息
+   * @memberof LoginPage
+   */
+  public clearLogin() {
+    for (const key in loginInfo) {
+      if (
+        loginInfo.hasOwnProperty(key) &&
+        key !== "UserName" &&
+        key !== "Password"
+      ) {
+        loginInfo[key] = null;
+      }
+    }
+    Local.set("sessionId", "");
+    this.ionicStorage.set("loginInfo", loginInfo); // 登录信息配置对象
+    this.ionicStorage.set("userInfo", loginInfo["UserInfo"]); // 后台返回用户信息对象
+  }
+
+  /**
+   * 退出登录
+   * @memberof SideMenuPage
+   */
+  public exitLogin() {
+    this.clearLogin(); // 清除登录信息
+    this.navCtrl.setRoot(LoginPage); // 跳转到主页
+    // const loading = this.gloService.showLoading("正在退出，请稍候...");
+    // const formData: any = {};
+    // formData.__ajax = "json";
+    // this.httpReq.get("home/a/logout", formData, data => {
+    //   console.error(data);
+    //   if (data["data"] && data["data"]["result"] == "true") {
+    //     this.gloService.showMsg("退出成功", null, 1000);
+    //     loading.dismiss();
+    //     this.clearLogin(); // 清除登录信息
+    //     this.navCtrl.setRoot(LoginPage); // 跳转到主页
+    //   } else {
+    //     loading.dismiss();
+    //     this.gloService.showMsg(data["message"], null, 3000);
+    //   }
+    // });
+    // this.navCtrl.goToRoot({ animate: false }); // 跳转到主页
+    // this.app.getRootNav().push(LoginPage); // 跳转到登录页面
+    // this.viewCtrl.dismiss(); // 销毁当前视图
+  }
+
+  /**
+   * 退出APP应用
+   * @memberof SideMenuPage
+   */
+  public exitApp() {
+    this.menuCtrl.close(); // 关闭侧滑菜单
+    this.platform.exitApp(); // 退出APP应用
   }
 }

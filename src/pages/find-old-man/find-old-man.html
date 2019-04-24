@@ -24,11 +24,6 @@
                                 <div>
                                     <span>姓名：{{x?.name}}</span>
                                 </div>
-                                <div>
-                                    <span>标签:</span>
-                                    <span class="colorPri" *ngIf="x?.nfcNo">{{x?.nfcNo}}</span>
-                                    <span class="colorPri" *ngIf="!x?.nfcNo">无</span>
-                                </div>
                             </div>
                         </ion-card-header>
                         <ion-card-content>
@@ -40,37 +35,33 @@
                                     <span>社区：{{x?.community?.areaName}}</span>
                                 </div>
                             </div>
-                            <div>
-                                <span>地址：{{x?.address}}</span>
+                            <div class="mt10">
+                                <div class="borBBox">
+                                    <div class="disFlex justConSB h26 aligIteC pr10">
+                                        <span class="ftz16 color999">详细地址</span>
+                                    </div>
+                                </div>
+                                <div class="mt5">
+                                    <div class="disFlex flexDirC pl10 pr10 mb10" *ngFor="let y of x?.homeOldFolksAddressList;let i = index;">
+                                        <div class="">
+                                            <span class="">{{i + 1}}、{{y.address}}&nbsp;<i class="colorPri" *ngIf="y.defaultFlag == '1'" style="font-style: normal;">(默认)</i></span>
+                                        </div>
+                                        <div class="disFlex justConSB mt5">
+                                            <div>
+                                                <span>标签:</span>
+                                                <span class="colorPri" *ngIf="y?.nfcNo">{{y?.nfcNo}}</span>
+                                                <span class="colorPri" *ngIf="!y?.nfcNo">无</span>
+                                            </div>
+                                            <div>
+                                                <ion-badge color="orange" *ngIf="!y?.nfcNo" (click)="jumpPage('AddMacPage',{'id':y.id})">写入标签</ion-badge>
+                                                <ion-badge color="orange" *ngIf="y?.nfcNo" (click)="jumpPage('AddMacPage',{'id':y.id})">重写标签</ion-badge>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <ion-row no-padding align-items-center>
-                                <ion-col col-12 no-padding text-right>
-                                    <button ion-button small color="orange" *ngIf="!x?.nfcNo" (click)="jumpPage('AddMacPage',{'id':x.id})">写入标签</button>
-                                    <button ion-button small color="orange" *ngIf="x?.nfcNo" (click)="jumpPage('AddMacPage',{'id':x.id})">重写标签</button>
-                                </ion-col>
-                            </ion-row>
                         </ion-card-content>
                     </ion-card>
-                    <!-- <div class="h30 w100p">
-                        <div class="disFlex h30">
-                            <div class="disFlex aligIteC">
-                                <div>
-                                    <span class="ftz16">{{x.name}}({{x.createDate | date:'yyyy-MM-dd HH:mm'}} {{x.timeFrame}})</span>
-                                </div>
-                            </div>
-                            <div class="flexGrow1 disFlex aligIteC flexDirRR pr10">
-                                <div>
-                                    <span class="ftz16 colorPri" *ngIf="!x.isPin">未销样</span>
-                                    <span class="ftz16 colorSec" *ngIf="x.isPin">已销样</span>
-                                </div>
-                            </div>
-                            <div class="w20 disFlex aligIteC justConC">
-                                <div>
-                                    <ion-icon class="ftz30 color999" name="ios-arrow-forward"></ion-icon>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>

@@ -24,6 +24,37 @@
                 <div class="h50 borBBox">
                     <div class="h100p disFlex justConSB aligIteC">
                         <div>
+                            <span class="ftz16">地址</span>
+                        </div>
+                        <div>
+                            <span class="ftz16">{{formInfo?.homeOldFolksAddressList[0]?.address}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h50 borBBox">
+                    <div class="h100p disFlex justConSB aligIteC">
+                        <div>
+                            <span class="ftz16">标签 Mac</span>
+                        </div>
+                        <div>
+                            <span class="ftz16 colorPri" *ngIf="formInfo?.homeOldFolksAddressList[0]?.nfcNo">{{formInfo?.homeOldFolksAddressList[0]?.nfcNo}}</span>
+                            <span class="ftz16 colorPri" *ngIf="!formInfo?.homeOldFolksAddressList[0]?.nfcNo">无（请扫描标签）</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="h50 borBBox">
+                    <div class="h100p disFlex justConSB aligIteC">
+                        <div>
+                            <span class="ftz16">姓名</span>
+                        </div>
+                        <div>
+                            <span class="ftz16">{{formInfo?.name}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h50 borBBox">
+                    <div class="h100p disFlex justConSB aligIteC">
+                        <div>
                             <span class="ftz16">街道</span>
                         </div>
                         <div>
@@ -61,7 +92,7 @@
                             <span class="ftz16 colorPri" *ngIf="!formInfo?.nfcNo">无（请扫描标签）</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -70,7 +101,7 @@
     <ion-toolbar>
         <ion-row no-padding justify-content-around>
             <ion-col text-center class="w90p">
-                <button ion-button block color="orange" [disabled]="!formInfo?.nfcNo" (click)="saveForm()">保存</button>
+                <button ion-button block color="orange" [disabled]="!formInfo?.homeOldFolksAddressList[0]?.nfcNo" (click)="saveForm()">保存</button>
             </ion-col>
         </ion-row>
     </ion-toolbar>

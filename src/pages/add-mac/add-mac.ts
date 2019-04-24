@@ -15,10 +15,10 @@ import _ from "underscore"; // 工具类
 import { GlobalService } from "../../common/service/GlobalService";
 import { JsUtilsService } from "../../common/service/JsUtils.Service";
 import { HttpReqService } from "../../common/service/HttpUtils.Service";
-import { ParamService } from "../../common/service/Param.Service";
 import { loginInfo } from "../../common/config/BaseConfig";
 import { NFC } from "@ionic-native/nfc";
 import { UpperCasePipe } from "@angular/common";
+// import { ParamService } from "../../common/service/Param.Service";
 // import { Storage } from "@ionic/storage";
 // import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 // import { FormValidService } from "../../common/service/FormValid.Service";
@@ -112,7 +112,7 @@ export class AddMacPage {
           }
         }, 300);
 
-        this.formInfo.nfcNo = nfcId;
+        this.formInfo.homeOldFolksAddressList[0].nfcNo = nfcId;
         // this.events.unsubscribe("nfcScanSuc");
       } else {
         // setTimeout(() => {
@@ -157,7 +157,7 @@ export class AddMacPage {
    * @memberof RetenSampAddPage
    */
   public saveForm() {
-    this.formData.nfcNo = this.formInfo.nfcNo;
+    this.formData.nfcNo = this.formInfo.homeOldFolksAddressList[0].nfcNo;
     const sendObj: any = this.jsUtil.deepClone(this.formData);
     this.httpReq.get(
       "home/a/oldfolksinfo/homeOldFolksInfo/saveNfcNo",

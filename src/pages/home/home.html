@@ -5,17 +5,23 @@
             <ion-icon name="menu"></ion-icon>
         </button> -->
         <ion-title>主页</ion-title>
+        <ion-buttons end>
+            <button ion-button class="pr10 ftz14" (click)="exit('login')">
+                <span showWhen="android,windows,ios">退出登录</span>
+                <!-- <ion-icon class="ftz30" name="ios-home" showWhen="android,windows,ios"></ion-icon> -->
+            </button>
+        </ion-buttons>
     </ion-navbar>
     <ion-toolbar no-padding>
         <div class="bgcFFF">
             <ion-row no-padding align-items-center>
                 <ion-col col-10 no-padding>
                     <ion-item>
-                        <ion-input type="text" value="" placeholder="请输入姓名" [(ngModel)]="serName"></ion-input>
+                        <ion-input type="text" value="" placeholder="请输入姓名" [(ngModel)]="serName" (keyup)="serListData(serName)"></ion-input>
                     </ion-item>
                 </ion-col>
                 <ion-col col-2 no-padding text-center>
-                    <button ion-button small class="w80p" color="orange" (click)="jumpPage('FindOldManPage',{'name':serName})">查询</button>
+                    <button ion-button small class="w80p" color="orange" (click)="serListData(serName)">查询</button>
                 </ion-col>
             </ion-row>
         </div>
@@ -41,11 +47,6 @@
                                 <div>
                                     <span>姓名：{{x?.name}}</span>
                                 </div>
-                                <div>
-                                    <span>标签:</span>
-                                    <span class="colorPri" *ngIf="x?.nfcNo">{{x?.nfcNo}}</span>
-                                    <span class="colorPri" *ngIf="!x?.nfcNo">无</span>
-                                </div>
                             </div>
                         </ion-card-header>
                         <ion-card-content>
@@ -57,15 +58,31 @@
                                     <span>社区：{{x?.community?.areaName}}</span>
                                 </div>
                             </div>
-                            <div>
-                                <span>地址：{{x?.address}}</span>
+                            <div class="mt10">
+                                <div class="borBBox">
+                                    <div class="disFlex justConSB h26 aligIteC pr10">
+                                        <span class="ftz16 color999">详细地址</span>
+                                    </div>
+                                </div>
+                                <div class="mt5">
+                                    <div class="disFlex flexDirC pl10 pr10 mb10" *ngFor="let y of x?.homeOldFolksAddressList;let i = index;">
+                                        <div class="">
+                                            <span class="">{{i + 1}}、{{y.address}}&nbsp;<i class="colorPri" *ngIf="y.defaultFlag == '1'" style="font-style: normal;">(默认)</i></span>
+                                        </div>
+                                        <div class="disFlex justConSB mt5">
+                                            <div>
+                                                <span>标签:</span>
+                                                <span class="colorPri" *ngIf="y?.nfcNo">{{y?.nfcNo}}</span>
+                                                <span class="colorPri" *ngIf="!y?.nfcNo">无</span>
+                                            </div>
+                                            <div>
+                                                <ion-badge color="orange" *ngIf="!y?.nfcNo" (click)="jumpPage('AddMacPage',{'id':y.id})">写入标签</ion-badge>
+                                                <ion-badge color="orange" *ngIf="y?.nfcNo" (click)="jumpPage('AddMacPage',{'id':y.id})">重写标签</ion-badge>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <ion-row no-padding align-items-center>
-                                <ion-col col-12 no-padding text-right>
-                                    <button ion-button small color="orange" *ngIf="!x?.nfcNo" (click)="jumpPage('AddMacPage',{'id':x.id})">写入标签</button>
-                                    <button ion-button small color="orange" *ngIf="x?.nfcNo" (click)="jumpPage('AddMacPage',{'id':x.id})">重写标签</button>
-                                </ion-col>
-                            </ion-row>
                         </ion-card-content>
                     </ion-card>
                     <!-- <div class="h30 w100p">

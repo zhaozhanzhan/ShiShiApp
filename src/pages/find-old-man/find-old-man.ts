@@ -24,7 +24,7 @@ import { HttpReqService } from "../../common/service/HttpUtils.Service";
 import { ParamService } from "../../common/service/Param.Service";
 import { ServiceNotification } from "../../common/service/ServiceNotification";
 import { GlobalMethod } from "../../common/service/GlobalMethod";
-import { pageObj } from "../../common/config/BaseConfig";
+import { pageObj, loginInfo } from "../../common/config/BaseConfig";
 // import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 // import { FormValidService } from "../../common/service/FormValid.Service";
 // import { JsUtilsService } from "../../common/service/JsUtils.Service";
@@ -40,7 +40,8 @@ export class FindOldManPage {
   content: Content;
 
   public paramStr: string = null; // 传过来的参数
-  public reqUrl: string = "home/a/oldfolksinfo/homeOldFolksInfo/listOldData"; // 请求数据URL
+  public reqUrl: string =
+    "home/a/oldfolksinfo/homeOldFolksInfo/implementationListOldData"; // 请求数据URL
   public sendData: any = {}; // 定义请求数据时的对象
   public dataList: Array<any> = []; // 数据列表
   public isShowNoData: boolean = false; // 给客户提示没有更多数据
@@ -68,11 +69,18 @@ export class FindOldManPage {
     this.paramStr = this.navParams.get("name");
   }
 
-  ionViewDidLoad() {
+  ionViewDidLoad() {}
+
+  ionViewDidEnter() {
     this.sendData.pageNo = pageObj.currentPage; // 定义当前页码
     this.sendData.pageSize = pageObj.everyItem; // 定义当前页面请求条数
     this.sendData.totalPage = pageObj.totalPage; // 定义当前页面请求条数
     this.sendData.name = this.paramStr; // 传过来的参数
+    try {
+      this.sendData.loginCode = loginInfo.UserInfo.user.loginCode; // 定义当前页面请求条数
+    } catch (error) {
+      this.gloService.showMsg("获取 loginCode 失败", null, 1000);
+    }
     // 请求列表数据
     this.reqData(
       this.reqUrl,
@@ -87,27 +95,24 @@ export class FindOldManPage {
         this.dataList = this.dataList.concat(err);
       }
     );
-  }
-
-  ionViewDidEnter() {
-    this.ionicStorage.get("loginInfo").then(loginObj => {
-      if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
-        // 判断是否是空对象
-        console.error("loginObj========", loginObj);
-        const loginId = loginObj.LoginId;
-        if (_.isString(loginId) && loginId.length > 0) {
-          const sendData: any = {};
-          sendData.serverPersonID = loginId;
-        } else {
-          this.serNotifi.closeServer(); // 关闭定时服务
-          this.gloService.showMsg("未获取到用户ID!");
-        }
-      } else {
-        // this.isOpenSer = false;
-        this.serNotifi.closeServer(); // 关闭定时服务
-        this.gloService.showMsg("未获取到用户ID!");
-      }
-    });
+    // this.ionicStorage.get("loginInfo").then(loginObj => {
+    //   if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
+    //     // 判断是否是空对象
+    //     console.error("loginObj========", loginObj);
+    //     const loginId = loginObj.LoginId;
+    //     if (_.isString(loginId) && loginId.length > 0) {
+    //       const sendData: any = {};
+    //       sendData.serverPersonID = loginId;
+    //     } else {
+    //       this.serNotifi.closeServer(); // 关闭定时服务
+    //       this.gloService.showMsg("未获取到用户ID!");
+    //     }
+    //   } else {
+    //     // this.isOpenSer = false;
+    //     this.serNotifi.closeServer(); // 关闭定时服务
+    //     this.gloService.showMsg("未获取到用户ID!");
+    //   }
+    // });
     console.error("this.navCtrl", this.navCtrl);
     // this.initNfcListener(); // 初始化NFC监听
 
