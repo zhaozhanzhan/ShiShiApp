@@ -67,7 +67,9 @@ export class HomePage {
     public serNotifi: ServiceNotification // 服务开启定时通知关闭
   ) {}
 
-  ionViewDidLoad() {
+  ionViewDidLoad() {}
+
+  ionViewDidEnter() {
     this.ionicStorage.get("loginInfo").then(
       loginObj => {
         if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
@@ -114,9 +116,6 @@ export class HomePage {
         }
       }
     );
-  }
-
-  ionViewDidEnter() {
     // this.ionicStorage.get("loginInfo").then(loginObj => {
     //   if (!_.isNull(loginObj) && !_.isEmpty(loginObj)) {
     //     // 判断是否是空对象
