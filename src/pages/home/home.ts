@@ -518,23 +518,23 @@ export class HomePage {
    * @memberof SideMenuPage
    */
   public exitLogin() {
-    this.clearLogin(); // 清除登录信息
-    this.navCtrl.setRoot(LoginPage); // 跳转到主页
-    // const loading = this.gloService.showLoading("正在退出，请稍候...");
-    // const formData: any = {};
-    // formData.__ajax = "json";
-    // this.httpReq.get("home/a/logout", formData, data => {
-    //   console.error(data);
-    //   if (data["data"] && data["data"]["result"] == "true") {
-    //     this.gloService.showMsg("退出成功", null, 1000);
-    //     loading.dismiss();
-    //     this.clearLogin(); // 清除登录信息
-    //     this.navCtrl.setRoot(LoginPage); // 跳转到主页
-    //   } else {
-    //     loading.dismiss();
-    //     this.gloService.showMsg(data["message"], null, 3000);
-    //   }
-    // });
+    // this.clearLogin(); // 清除登录信息
+    // this.navCtrl.setRoot(LoginPage); // 跳转到主页
+    const loading = this.gloService.showLoading("正在退出，请稍候...");
+    const formData: any = {};
+    formData.__ajax = "json";
+    this.httpReq.get("home/a/logout", formData, data => {
+      console.error(data);
+      if (data["data"] && data["data"]["result"] == "true") {
+        this.gloService.showMsg("退出成功", null, 1000);
+        loading.dismiss();
+        this.clearLogin(); // 清除登录信息
+        this.navCtrl.setRoot(LoginPage); // 跳转到主页
+      } else {
+        loading.dismiss();
+        this.gloService.showMsg(data["message"], null, 3000);
+      }
+    });
     // this.navCtrl.goToRoot({ animate: false }); // 跳转到主页
     // this.app.getRootNav().push(LoginPage); // 跳转到登录页面
     // this.viewCtrl.dismiss(); // 销毁当前视图
